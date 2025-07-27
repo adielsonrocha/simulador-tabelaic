@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Relatório de Performance Colaborativo</title>
+    <title>Gerador de Relatório de Performance</title>
     <!-- Carregando o Tailwind CSS para estilos rápidos e modernos -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Carregando a fonte Poppins para um visual mais elegante -->
@@ -16,15 +16,65 @@
         /* Aplicando a fonte Poppins como padrão */
         body {
             font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .hidden { display: none; }
-        .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 50; }
-        .modal-content { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 60; }
-        .bar-container { height: 12px; width: 100%; background-color: #f3f4f6; border-radius: 9999px; overflow: hidden; position: relative; }
-        .bar { height: 100%; border-radius: 9999px; transition: width 0.3s ease-in-out; }
-        .meta-line { position: absolute; height: 100%; width: 2px; background-image: linear-gradient(to bottom, #9ca3af 40%, transparent 20%); background-size: 1px 4px; top: 0; }
-        .score-card-animate { animation: zoomIn 0.5s ease-out forwards; }
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        /* Estilo para transições suaves */
+        .hidden {
+            display: none;
+        }
+        /* Estilos para o modal de confirmação */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+        }
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 60;
+        }
+        /* Estilos para o gráfico de barra */
+        .bar-container {
+            height: 12px;
+            width: 100%;
+            background-color: #f3f4f6;
+            border-radius: 9999px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bar {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.3s ease-in-out;
+        }
+        .meta-line {
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            background-image: linear-gradient(to bottom, #9ca3af 40%, transparent 20%);
+            background-size: 1px 4px;
+            top: 0;
+        }
+        /* Animação para os cards de nota final */
+        .score-card-animate {
+            animation: zoomIn 0.5s ease-out forwards;
+        }
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -88,11 +138,17 @@
                         <h1 id="results-title" class="text-2xl md:text-3xl font-bold text-gray-800">Resultados de Performance</h1>
                         <p class="text-gray-500">O&M Metropolitana - <span id="results-month">Maio</span></p>
                     </div>
-                    <button id="view-toggle-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg flex items-center gap-2">
-                        <svg id="table-view-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                        <svg id="dashboard-view-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-                        <span id="view-toggle-text">Visão em Cards</span>
-                    </button>
+                    <div class="flex items-center gap-2">
+                         <button id="go-to-presentation-btn" class="bg-indigo-100 text-indigo-700 font-semibold py-2 px-4 rounded-lg flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C3.732 4.943 7.523 3 10 3s6.268 1.943 9.542 7c-3.274 5.057-7.03 7-9.542 7S3.732 15.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg>
+                            Gerar Apresentação
+                        </button>
+                        <button id="view-toggle-btn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg flex items-center gap-2">
+                            <svg id="table-view-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                            <svg id="dashboard-view-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                            <span id="view-toggle-text">Visão em Cards</span>
+                        </button>
+                    </div>
                 </header>
                 
                 <div id="final-scores-container" class="grid grid-cols-2 gap-4 mb-4"></div>
@@ -113,6 +169,26 @@
                     <button id="export-csv-btn" class="bg-teal-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-teal-700 transition-colors mr-2">Exportar CSV</button>
                     <button id="back-to-form-btn" class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-700 transition-colors">← Voltar e Editar</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO DE APRESENTAÇÃO -->
+        <div id="presentation-section-wrapper" class="hidden">
+            <div id="presentation-section" class="bg-white p-8">
+                 <header class="mb-6 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Resumo Gerencial de Performance</h1>
+                        <p class="text-gray-500">Visão consolidada das áreas - <span id="presentation-month"></span></p>
+                    </div>
+                </header>
+                <div id="presentation-final-scores" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div id="presentation-table-container" class="lg:col-span-3"></div>
+                    <div id="presentation-cards-container" class="space-y-4 lg:col-span-1"></div>
+                </div>
+            </div>
+             <div class="mt-8 flex justify-end items-center">
+                <button id="back-to-results-btn" class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-700 transition-colors">← Voltar</button>
             </div>
         </div>
     </div>
@@ -139,42 +215,40 @@
         </div>
     </div>
 
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, setDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+    <script>
         // --- DADOS BASE ---
         const leaderships = [
-            { id: 'gerencia_om_metro', name: 'Gerência de Obras e Manutenção | Metropolitana', level: 1 },
-            { id: 'exec_obras_rd_metro', name: 'Executiva de Obras RD | Metropolitana', level: 2 },
-            { id: 'exec_manut_at_metro', name: 'Executiva de Manutenção AT | Metropolitana', level: 2 },
-            { id: 'exec_manut_rd_metro', name: 'Executiva de Manutenção RD | Metropolitana', level: 2 },
-            { id: 'lider_om_teresina', name: 'Liderança de Obras e Manutenção | Teresina', level: 3 },
-            { id: 'lider_om_campo_maior', name: 'Liderança de Obras e Manutenção | Campo Maior', level: 3 },
+            { id: 'gerencia_om_metro', name: 'Gerência de Obras e Manutenção | Metropolitana', level: 1, responsible: 'Johnny Aparecido Monteiro' },
+            { id: 'exec_obras_rd_metro', name: 'Executiva de Obras RD | Metropolitana', level: 2, responsible: 'Adielson Pimenta Rocha' },
+            { id: 'exec_manut_at_metro', name: 'Executiva de Manutenção AT | Metropolitana', level: 2, responsible: 'Francisco Barbosa Leal Junior' },
+            { id: 'exec_manut_rd_metro', name: 'Executiva de Manutenção RD | Metropolitana', level: 2, responsible: 'Jefferson dos Santos Brito Junior' },
+            { id: 'lider_om_teresina', name: 'Liderança de Obras e Manutenção | Teresina', level: 3, responsible: 'A Contratar' },
+            { id: 'lider_om_campo_maior', name: 'Liderança de Obras e Manutenção | Campo Maior', level: 3, responsible: 'Danilo Castelo Branco Lemos' },
         ];
         
         const defaultIndicatorsData = {
             gerencia_om_metro: [
-                { id: 'qualidade_tecnica', nome: "Índice de Qualidade Técnica", tipo: 'D', peso: "40%", metaMes: 10.00, realMes: 8.25, notaMes: 8.25, metaAcumulado: 10.00, realAcumulado: 11.88, notaAcumulada: 11.88, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 20.917l9 3 9-3a12.02 12.02 0 00-5.382-11.957z" /></svg>', fixedMeta: 10 },
-                { id: 'dec_regulatoria', nome: "DEC Visão Regulatória", tipo: 'A', peso: "25%", metaMes: 1.18, realMes: 1.23, notaMes: 7.00, metaAcumulado: 8.38, realAcumulado: 7.24, notaAcumulada: 15.00, goal: 'down', icon: '' },
-                { id: 'fec_regulatoria', nome: "FEC Visão Regulatória", tipo: 'A', peso: "30%", metaMes: 0.65, realMes: 0.55, notaMes: 15.00, metaAcumulado: 3.91, realAcumulado: 2.42, notaAcumulada: 15.00, goal: 'down', icon: '' },
-                { id: 'penalidades', nome: "Penalidades DIC/FIC/DMIC", tipo: 'A', peso: "25%", metaMes: 402, realMes: 729, notaMes: 0.00, metaAcumulado: 6225, realAcumulado: 5802, notaAcumulada: 2.50, goal: 'down', icon: '' },
-                { id: 'aderencia_limites', nome: "Aderência a Limites de Continuidade", tipo: 'A', peso: "20%", metaMes: 10.00, realMes: 14.00, notaMes: 10.00, metaAcumulado: 11.00, realAcumulado: 14.00, notaAcumulada: 15.00, goal: 'up', icon: '' },
-                { id: 'cobertura_estoque', nome: "Cobertura de Estoque Parceiros", tipo: 'D', peso: "10%", metaMes: 1.3, realMes: 2.1, notaMes: 7.12, metaAcumulado: 1.3, realAcumulado: 2.1, notaAcumulada: 7.12, syncAcumulado: true, goal: 'down', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7" /></svg>' },
-                { id: 'gastos_gerenciaveis', nome: "Gastos Gerenciáveis", tipo: 'D', peso: "10%", metaMes: 3920, realMes: 2735, notaMes: 15.00, metaAcumulado: 20300, realAcumulado: 15179, notaAcumulada: 15.00, goal: 'down', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01" /></svg>' },
-                { id: 'aderencia_ligacoes', nome: "Aderência do Plano de Ligações", tipo: 'D', peso: "20%", metaMes: 10.00, realMes: 7.36, notaMes: 7.36, metaAcumulado: 10.00, realAcumulado: 7.35, notaAcumulada: 7.35, syncAcumulado: true, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>', fixedMeta: 10 },
-                { id: 'cumprimento_obras', nome: "Índice de Cumprimento de Obras", tipo: 'D', peso: "20%", metaMes: 10.00, realMes: 6.90, notaMes: 6.90, metaAcumulado: 10.00, realAcumulado: 6.90, notaAcumulada: 6.90, syncAcumulado: true, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>', fixedMeta: 10 },
-                { id: 'cumprimento_torre_plpt', nome: "Cumprimento Torre de Investimentos PLPT", tipo: 'A', peso: "50%", metaMes: 4.00, realMes: 4.00, notaMes: 4.00, metaAcumulado: 4.00, realAcumulado: 4.00, notaAcumulada: 4.00, syncAcumulado: true, goal: 'up', icon: '', fixedMeta: 10 },
-                { id: 'cumprimento_torre_elegivel', nome: "Cumprimento Torre de Investimentos Elegível", tipo: 'A', peso: "50%", metaMes: 10.00, realMes: 9.80, notaMes: 9.80, metaAcumulado: 10.00, realAcumulado: 9.80, notaAcumulada: 9.80, syncAcumulado: true, goal: 'up', icon: '', fixedMeta: 10 },
+                { id: 'qualidade_tecnica', nome: "Índice de Qualidade Técnica", tipo: 'D', peso: "40%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 20.917l9 3 9-3a12.02 12.02 0 00-5.382-11.957z" /></svg>', fixedMeta: 10, isEditable: true },
+                { id: 'dec_regulatoria', nome: "DEC Visão Regulatória", tipo: 'A', peso: "25%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '', isEditable: true },
+                { id: 'fec_regulatoria', nome: "FEC Visão Regulatória", tipo: 'A', peso: "30%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '', isEditable: true },
+                { id: 'penalidades', nome: "Penalidades DIC/FIC/DMIC", tipo: 'A', peso: "25%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '', isEditable: true },
+                { id: 'aderencia_limites', nome: "Aderência a Limites de Continuidade", tipo: 'A', peso: "20%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '', isEditable: true },
+                { id: 'cobertura_estoque', nome: "Cobertura de Estoque Parceiros", tipo: 'D', peso: "10%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7" /></svg>', isEditable: true },
+                { id: 'gastos_gerenciaveis', nome: "Gastos Gerenciáveis", tipo: 'D', peso: "10%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01" /></svg>', isEditable: true },
+                { id: 'aderencia_ligacoes', nome: "Aderência do Plano de Ligações com Obras", tipo: 'D', peso: "20%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>', fixedMeta: 10, isEditable: true },
+                { id: 'cumprimento_obras', nome: "Índice de Cumprimento de Obras", tipo: 'D', peso: "20%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>', fixedMeta: 10, isEditable: true },
+                { id: 'cumprimento_torre_plpt', nome: "Cumprimento Torre de Investimentos PLPT", tipo: 'A', peso: "50%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '', fixedMeta: 10, isEditable: true },
+                { id: 'cumprimento_torre_elegivel', nome: "Cumprimento Torre de Investimentos Elegível", tipo: 'A', peso: "50%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '', fixedMeta: 10, isEditable: true },
             ],
             exec_obras_rd_metro: [
-                { id: 'nivel_servico_ligacao', nome: "Nível Serviço Ligação Nova Grupo A", tipo: 'D', peso: "15%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>' },
+                { id: 'nivel_servico_ligacao', nome: "Nível de Serviço Ligação Nova Grupo A - Sem Obras", tipo: 'D', peso: "15%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>' },
                 { id: 'avanco_torre_gambiarra', nome: "Avanço Físico da Torre - Gambiarra", tipo: 'D', peso: "15%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>' },
                 { id: 'cobertura_estoque_obras', nome: "Cobertura de Estoque Parceiros", tipo: 'D', peso: "15%", metaMes: 1.0, realMes: 0, notaMes: 0, metaAcumulado: 1.0, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7" /></svg>' },
-                { id: 'aderencia_plano_ligacoes', nome: "Aderência do Plano de Ligações c/ Obras", tipo: 'D', peso: "25%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>', fixedMeta: 10 },
-                { id: 'cumprimento_torre_invest', nome: "Cumprimento Torre de Investimentos - PLPT", tipo: 'D', peso: "30%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>', fixedMeta: 10 },
+                { id: 'aderencia_plano_ligacoes', nome: "Aderência do Plano de Ligações com Obras", tipo: 'D', peso: "25%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>', fixedMeta: 10 },
+                { id: 'cumprimento_torre_invest', nome: "Cumprimento Torre de Investimentos", tipo: 'D', peso: "30%", metaMes: 10.00, realMes: 0, notaMes: 0, metaAcumulado: 10.00, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>', fixedMeta: 10 },
+                { id: 'cumprimento_torre_plpt', nome: "Cumprimento Torre de Investimentos PLPT", tipo: 'A', peso: "50%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '', fixedMeta: 10 },
+                { id: 'cumprimento_torre_elegivel', nome: "Cumprimento Torre de Investimentos Elegível", tipo: 'A', peso: "50%", metaMes: 0, realMes: 0, notaMes: 0, metaAcumulado: 0, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '', fixedMeta: 10 },
             ],
             exec_manut_rd_metro: [
                 { id: 'eficacia_plano_manut', nome: "Índice de Eficácia do Plano de Manutenção (RD)", tipo: 'D', peso: "15%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>' },
@@ -182,8 +256,8 @@
                 { id: 'plano_manut_concluidos', nome: "Plano de Manutenção RD - Circuitos Concluídos", tipo: 'A', peso: "50%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '' },
                 { id: 'aderencia_conjuntos', nome: "Aderência à Limites de Conjuntos Elétricos", tipo: 'D', peso: "25%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>' },
                 { id: 'indice_dec_fec_at', nome: "Índice DEC e FEC - Visão Regulatória", tipo: 'D', peso: "25%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 20.917l9 3 9-3a12.02 12.02 0 00-5.382-11.957z" /></svg>' },
-                { id: 'dec_visao_reg_at', nome: "DEC Visão Regulatória", tipo: 'A', peso: "40%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '' },
-                { id: 'fec_visao_reg_at', nome: "FEC Visão Regulatória", tipo: 'A', peso: "60%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '' },
+                { id: 'dec_regulatoria', nome: "DEC Visão Regulatória", tipo: 'A', peso: "40%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '' },
+                { id: 'fec_regulatoria', nome: "FEC Visão Regulatória", tipo: 'A', peso: "60%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '' },
                 { id: 'gastos_manut_rd', nome: "Gastos Gerenciáveis - Exec Manut RD", tipo: 'D', peso: "20%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01" /></svg>' },
                 { id: 'cumprimento_torre_manut', nome: "Cumprimento Torre Investimentos Elegível", tipo: 'D', peso: "15%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>', fixedMeta: 10 },
             ],
@@ -194,6 +268,12 @@
                 { id: 'fec_visao_reg_at_2', nome: "FEC Visão Regulatória", tipo: 'A', peso: "60%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'down', icon: '' },
                 { id: 'cumprimento_torre_at', nome: "Cumprimento Torre Investimentos - Elegível", tipo: 'D', peso: "20%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>', fixedMeta: 10 },
                 { id: 'eficacia_plano_manut_at', nome: "Eficácia do Plano de Manutenção AT", tipo: 'D', peso: "15%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>' },
+                { id: 'desempenho_automacao', nome: "Índice Desempenho da Automação", tipo: 'D', peso: "20%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6a2 2 0 100-4 2 2 0 000 4zm0 14a2 2 0 100-4 2 2 0 000 4zm6-8a2 2 0 100-4 2 2 0 000 4zm-12 0a2 2 0 100-4 2 2 0 000 4z" /></svg>' },
+                { id: 'disp_com_remotas_se', nome: "Disponibilidade da comunicação Remotas SE com Elipse", tipo: 'A', peso: "20%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '' },
+                { id: 'disp_com_reles', nome: "Disponibilidade da comunicação Relés com Remotas SE", tipo: 'A', peso: "20%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '' },
+                { id: 'disp_com_equip_rd', nome: "Disponibilidade de Comunicação Equipamentos RD", tipo: 'A', peso: "20%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '' },
+                { id: 'taxa_sucesso_tele_se', nome: "Taxa Sucesso Telecomandos SE", tipo: 'A', peso: "20%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '' },
+                { id: 'taxa_sucesso_tele_rd', nome: "Taxa Sucesso Telecomandos RD", tipo: 'A', peso: "20%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '' },
             ],
             lider_om_teresina: [
                 { id: 'eficacia_plano_manut_ter', nome: "Índice de Eficácia do Plano de Manutenção (RD)", tipo: 'D', peso: "25%", metaMes: 10, realMes: 0, notaMes: 0, metaAcumulado: 10, realAcumulado: 0, notaAcumulada: 0, goal: 'up', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>' },
@@ -252,6 +332,13 @@
         const tableViewIcon = document.getElementById('table-view-icon');
         const dashboardViewIcon = document.getElementById('dashboard-view-icon');
         const backToHomeBtn = document.getElementById('back-to-home-btn');
+        const goToPresentationBtn = document.getElementById('go-to-presentation-btn');
+        const presentationSectionWrapper = document.getElementById('presentation-section-wrapper');
+        const presentationTableContainer = document.getElementById('presentation-table-container');
+        const presentationCardsContainer = document.getElementById('presentation-cards-container');
+        const presentationMonthSpan = document.getElementById('presentation-month');
+        const backToResultsBtn = document.getElementById('back-to-results-btn');
+        const presentationFinalScores = document.getElementById('presentation-final-scores');
         let indicadorToDelete = null;
 
         // --- FUNÇÕES ---
@@ -265,20 +352,23 @@
             localStorage.setItem(`performanceReportData_${currentLeadershipId}`, JSON.stringify(dataToSave));
         }
 
-        function loadData() {
-            if (!currentLeadershipId) return;
-            const savedData = localStorage.getItem(`performanceReportData_${currentLeadershipId}`);
+        function loadData(leadershipId) {
+            const savedData = localStorage.getItem(`performanceReportData_${leadershipId}`);
             if (savedData) {
                 const parsedData = JSON.parse(savedData);
-                indicadores = parsedData.indicators;
-                monthInput.value = parsedData.month;
-            } else {
-                indicadores = JSON.parse(JSON.stringify(defaultIndicatorsData[currentLeadershipId] || defaultIndicatorsData.gerencia_om_metro)); // Deep copy
-                const today = new Date();
-                today.setMonth(today.getMonth() - 1);
-                const prevMonthName = today.toLocaleDateString('pt-BR', { month: 'long' });
-                monthInput.value = prevMonthName.charAt(0).toUpperCase() + prevMonthName.slice(1);
+                return {
+                    month: parsedData.month,
+                    indicators: parsedData.indicators
+                };
             }
+            const defaultData = JSON.parse(JSON.stringify(defaultIndicatorsData[leadershipId] || []));
+            const today = new Date();
+            today.setMonth(today.getMonth() - 1);
+            const prevMonthName = today.toLocaleDateString('pt-BR', { month: 'long' });
+            return {
+                month: prevMonthName.charAt(0).toUpperCase() + prevMonthName.slice(1),
+                indicators: defaultData
+            };
         }
 
         function sortIndicators(data) {
@@ -321,24 +411,25 @@
             return value.toFixed(2).replace('.', ',');
         }
 
-        function calculateScores() {
-            for (let i = 0; i < indicadores.length; i++) {
-                if (indicadores[i].tipo === 'D') {
+        function calculateScores(indicatorList) {
+            const localIndicadores = JSON.parse(JSON.stringify(indicatorList));
+            for (let i = 0; i < localIndicadores.length; i++) {
+                if (localIndicadores[i].tipo === 'D') {
                     let weightedSumMes = 0;
                     let weightedSumAcumulado = 0;
                     let hasChildren = false;
                     let j = i + 1;
-                    while (j < indicadores.length && indicadores[j].tipo === 'A') {
+                    while (j < localIndicadores.length && localIndicadores[j].tipo === 'A') {
                         hasChildren = true;
-                        const child = indicadores[j];
+                        const child = localIndicadores[j];
                         const weight = parseFloat(child.peso) / 100;
                         weightedSumMes += child.notaMes * weight;
                         weightedSumAcumulado += child.notaAcumulada * weight;
                         j++;
                     }
                     if (hasChildren) {
-                        indicadores[i].notaMes = weightedSumMes;
-                        indicadores[i].notaAcumulada = weightedSumAcumulado;
+                        localIndicadores[i].notaMes = weightedSumMes;
+                        localIndicadores[i].notaAcumulada = weightedSumAcumulado;
                     }
                 }
             }
@@ -346,7 +437,7 @@
             let finalNotaMes = 0;
             let finalNotaAcumulada = 0;
             let totalWeight = 0;
-            indicadores.forEach(indicador => {
+            localIndicadores.forEach(indicador => {
                 if (indicador.tipo === 'D') {
                     const weight = parseFloat(indicador.peso) / 100;
                     totalWeight += weight;
@@ -362,11 +453,11 @@
             };
         }
 
-        function renderFinalScores(scores) {
+        function renderFinalScores(scores, container) {
             const monthName = monthInput.value || "Mês";
             const statusMes = getStatus(scores.finalNotaMes);
             const statusAcumulado = getStatus(scores.finalNotaAcumulada);
-            finalScoresContainer.innerHTML = `
+            container.innerHTML = `
                 <div class="p-4 rounded-lg text-center ${statusMes.class} score-card-animate">
                     <h3 class="text-sm font-semibold text-gray-600">${monthName} - Nota Final</h3>
                     <p class="text-3xl font-bold ${statusMes.class.replace('bg-', 'text-').replace('-100', '-600')}">${scores.finalNotaMes.toFixed(2).replace('.', ',')}</p>
@@ -380,10 +471,14 @@
 
         function renderForm() {
             indicatorsForm.innerHTML = '';
-            indicadores.forEach(indicador => {
+            let indicatorsToRender = indicadores;
+            if (currentLeadershipId === 'gerencia_om_metro') {
+                indicatorsToRender = indicadores.filter(ind => ind.isEditable);
+            }
+
+            indicatorsToRender.forEach(indicador => {
                 const isAcompanhamento = indicador.tipo === 'A';
                 const hasChildren = indicador.tipo === 'D' && (indicadores[indicadores.indexOf(indicador) + 1]?.tipo === 'A');
-                const syncAcumulado = indicador.syncAcumulado;
                 const isMetaLocked = indicador.fixedMeta !== undefined;
                 const metaValue = isMetaLocked ? indicador.fixedMeta : indicador.metaMes;
                 const labelStyle = isAcompanhamento ? 'italic' : 'font-semibold';
@@ -411,9 +506,9 @@
                             <div class="p-3 border rounded-md">
                                 <h4 class="font-semibold text-center mb-2">Acumulado</h4>
                                 <div class="grid grid-cols-3 gap-2">
-                                    <div><label for="${indicador.id}-metaAcumulado" class="block text-xs font-medium text-gray-500">Meta</label><input type="number" step="0.01" id="${indicador.id}-metaAcumulado" value="${metaValue}" ${isMetaLocked || syncAcumulado ? 'disabled' : ''} class="mt-1 p-2 w-full border-gray-300 rounded-md disabled:bg-gray-200"></div>
-                                    <div><label for="${indicador.id}-realAcumulado" class="block text-xs font-medium text-gray-500">Real</label><input type="number" step="0.01" id="${indicador.id}-realAcumulado" value="${indicador.realAcumulado}" ${syncAcumulado ? 'disabled' : ''} class="mt-1 p-2 w-full border-gray-300 rounded-md disabled:bg-gray-200"></div>
-                                    <div><label for="${indicador.id}-notaAcumulada" class="block text-xs font-medium text-gray-500">Nota</label><input type="number" step="0.01" min="0" max="15" id="${indicador.id}-notaAcumulada" value="${indicador.notaAcumulada}" ${hasChildren || syncAcumulado ? 'disabled' : ''} class="mt-1 p-2 w-full border-gray-300 rounded-md font-bold disabled:bg-gray-200"></div>
+                                    <div><label for="${indicador.id}-metaAcumulado" class="block text-xs font-medium text-gray-500">Meta</label><input type="number" step="0.01" id="${indicador.id}-metaAcumulado" value="${indicador.metaAcumulado}" ${isMetaLocked ? 'disabled' : ''} class="mt-1 p-2 w-full border-gray-300 rounded-md disabled:bg-gray-200"></div>
+                                    <div><label for="${indicador.id}-realAcumulado" class="block text-xs font-medium text-gray-500">Real</label><input type="number" step="0.01" id="${indicador.id}-realAcumulado" value="${indicador.realAcumulado}" class="mt-1 p-2 w-full border-gray-300 rounded-md"></div>
+                                    <div><label for="${indicador.id}-notaAcumulada" class="block text-xs font-medium text-gray-500">Nota</label><input type="number" step="0.01" min="0" max="15" id="${indicador.id}-notaAcumulada" value="${indicador.notaAcumulada}" ${hasChildren ? 'disabled' : ''} class="mt-1 p-2 w-full border-gray-300 rounded-md font-bold disabled:bg-gray-200"></div>
                                 </div>
                             </div>
                         </div>
@@ -422,8 +517,7 @@
             });
         }
 
-        function renderTable() {
-            const monthName = monthInput.value || "Mês";
+        function generateTableHTML(indicatorList, monthName) {
             let tableHTML = `
                 <table class="min-w-full text-center table-fixed">
                     <thead class="bg-gray-700 text-white">
@@ -440,7 +534,7 @@
                     </thead>
                     <tbody class="bg-white">`;
 
-            indicadores.forEach((dado) => {
+            indicatorList.forEach((dado) => {
                 const statusMes = getStatus(dado.notaMes);
                 const statusAcumulado = getStatus(dado.notaAcumulada);
                 const colorMes = getRealValueColor(dado.metaMes, dado.realMes, dado.goal);
@@ -491,7 +585,11 @@
             });
 
             tableHTML += `</tbody></table>`;
-            tableContainer.innerHTML = tableHTML;
+            return tableHTML;
+        }
+
+        function renderTable() {
+            tableContainer.innerHTML = generateTableHTML(indicadores, monthInput.value || "Mês");
         }
         
         function renderDashboard() {
@@ -631,6 +729,44 @@
                 leadershipSelection.appendChild(levelContainer);
             });
         }
+        
+        function renderPresentationView() {
+            presentationMonthSpan.textContent = monthInput.value || "Mês";
+            const gerenciaData = loadData('gerencia_om_metro');
+            
+            if (gerenciaData) {
+                const tempIndicadores = gerenciaData.indicators;
+                consolidateGerenciaData(tempIndicadores); 
+                const finalScores = calculateScores(tempIndicadores);
+                renderFinalScores(finalScores, presentationFinalScores);
+                presentationTableContainer.innerHTML = generateTableHTML(tempIndicadores, gerenciaData.month);
+            } else {
+                presentationTableContainer.innerHTML = `<p class="text-center text-gray-500">Dados da Gerência ainda não foram salvos.</p>`;
+                presentationFinalScores.innerHTML = '';
+            }
+
+            presentationCardsContainer.innerHTML = '';
+            leaderships.filter(l => l.id !== 'gerencia_om_metro').forEach(lead => {
+                const data = loadData(lead.id);
+                let score = 'N/A';
+                let statusClass = 'bg-gray-100';
+                if (data && data.indicators.length > 0) {
+                    const finalScores = calculateScores(data.indicators);
+                    score = finalScores.finalNotaAcumulada.toFixed(2).replace('.', ',');
+                    statusClass = getStatus(finalScores.finalNotaAcumulada).class;
+                }
+                
+                const cardHTML = `
+                    <div class="p-4 rounded-lg shadow border ${statusClass}">
+                        <h4 class="font-bold text-gray-800">${lead.name}</h4>
+                        <p class="text-xs text-gray-500">Responsável: ${lead.responsible}</p>
+                        <p class="text-2xl font-bold text-right ${statusClass.replace('bg-','text-').replace('-100', '-600')}">${score}</p>
+                    </div>
+                `;
+                presentationCardsContainer.innerHTML += cardHTML;
+            });
+        }
+
 
         // --- EVENTOS ---
         indicatorsForm.addEventListener('input', (event) => {
@@ -646,15 +782,6 @@
             const indicador = indicadores.find(ind => ind.id === indicatorId);
             if (!indicador) return;
 
-            if (indicador.syncAcumulado && field.endsWith('Mes')) {
-                const syncFields = ['metaMes', 'realMes', 'notaMes'];
-                syncFields.forEach(syncField => {
-                    const sourceEl = document.getElementById(`${indicador.id}-${syncField}`);
-                    const destEl = document.getElementById(`${indicador.id}-${syncField.replace('Mes', 'Acumulada')}`);
-                    if (sourceEl && destEl) destEl.value = sourceEl.value;
-                });
-            }
-
             if (indicador.tipo === 'A' && (field === 'notaMes' || field === 'notaAcumulada')) {
                 let parentIndex = -1;
                 for (let i = indicadores.indexOf(indicador) - 1; i >= 0; i--) {
@@ -665,6 +792,9 @@
                 }
                 if (parentIndex !== -1) {
                     const parent = indicadores[parentIndex];
+                    const parentNoteInput = document.getElementById(`${parent.id}-${field}`);
+                    if (!parentNoteInput) return; // Se o pai não estiver no formulário, não faz nada
+
                     let weightedSum = 0;
                     let j = parentIndex + 1;
                     while (j < indicadores.length && indicadores[j].tipo === 'A') {
@@ -674,7 +804,7 @@
                         weightedSum += (parseFloat(noteInput.value) || 0) * weight;
                         j++;
                     }
-                    const parentNoteInput = document.getElementById(`${parent.id}-${field}`);
+                    
                     parentNoteInput.value = Math.max(0, Math.min(15, weightedSum)).toFixed(2);
                 }
             }
@@ -682,20 +812,37 @@
 
         function updateAndSave() {
             indicadores.forEach(indicador => {
-                indicador.metaMes = parseFloat(document.getElementById(`${indicador.id}-metaMes`).value) || 0;
-                indicador.realMes = parseFloat(document.getElementById(`${indicador.id}-realMes`).value) || 0;
-                indicador.notaMes = Math.max(0, Math.min(15, parseFloat(document.getElementById(`${indicador.id}-notaMes`).value) || 0));
-                indicador.metaAcumulado = parseFloat(document.getElementById(`${indicador.id}-metaAcumulado`).value) || 0;
-                indicador.realAcumulado = parseFloat(document.getElementById(`${indicador.id}-realAcumulado`).value) || 0;
-                indicador.notaAcumulada = Math.max(0, Math.min(15, parseFloat(document.getElementById(`${indicador.id}-notaAcumulada`).value) || 0));
+                const isEditable = (currentLeadershipId === 'gerencia_om_metro' && indicador.isEditable) || currentLeadershipId !== 'gerencia_om_metro';
+                if (isEditable) {
+                    const metaMesEl = document.getElementById(`${indicador.id}-metaMes`);
+                    if (metaMesEl) indicador.metaMes = parseFloat(metaMesEl.value) || 0;
+
+                    const realMesEl = document.getElementById(`${indicador.id}-realMes`);
+                    if (realMesEl) indicador.realMes = parseFloat(realMesEl.value) || 0;
+                    
+                    const notaMesEl = document.getElementById(`${indicador.id}-notaMes`);
+                    if (notaMesEl) indicador.notaMes = Math.max(0, Math.min(15, parseFloat(notaMesEl.value) || 0));
+
+                    const metaAcumuladoEl = document.getElementById(`${indicador.id}-metaAcumulado`);
+                    if (metaAcumuladoEl) indicador.metaAcumulado = parseFloat(metaAcumuladoEl.value) || 0;
+
+                    const realAcumuladoEl = document.getElementById(`${indicador.id}-realAcumulado`);
+                    if (realAcumuladoEl) indicador.realAcumulado = parseFloat(realAcumuladoEl.value) || 0;
+
+                    const notaAcumuladaEl = document.getElementById(`${indicador.id}-notaAcumulada`);
+                    if (notaAcumuladaEl) indicador.notaAcumulada = Math.max(0, Math.min(15, parseFloat(notaAcumuladaEl.value) || 0));
+                }
             });
             saveData();
         }
 
         function showReport() {
+            if (currentLeadershipId === 'gerencia_om_metro') {
+                consolidateGerenciaData(indicadores);
+            }
             resultsMonthSpan.textContent = monthInput.value || "Mês";
-            const finalScores = calculateScores();
-            renderFinalScores(finalScores);
+            const finalScores = calculateScores(indicadores);
+            renderFinalScores(finalScores, finalScoresContainer);
             indicadores = sortIndicators(indicadores);
             renderTable(); 
             renderDashboard();
@@ -704,6 +851,44 @@
             resultsSectionWrapper.classList.remove('hidden');
             return finalScores;
         }
+
+        function consolidateGerenciaData(gerenciaIndicators) {
+            const obrasData = loadData('exec_obras_rd_metro');
+            const manutRDData = loadData('exec_manut_rd_metro');
+
+            gerenciaIndicators.forEach(gerenciaIndicator => {
+                if (gerenciaIndicator.consolidatedFrom === 'exec_obras_rd_metro' && obrasData) {
+                    const sourceIndicator = obrasData.indicators.find(ind => ind.id === gerenciaIndicator.sourceIndicatorId);
+                    if (sourceIndicator) {
+                        Object.assign(gerenciaIndicator, { ...sourceIndicator, peso: gerenciaIndicator.peso, icon: gerenciaIndicator.icon });
+                    }
+                }
+                if (gerenciaIndicator.prefillFrom === 'exec_manut_rd_metro' && manutRDData) {
+                     const sourceIndicator = manutRDData.indicators.find(ind => ind.id === gerenciaIndicator.sourceIndicatorId);
+                     if(sourceIndicator) {
+                        const targetIndicator = gerenciaIndicators.find(ind => ind.id === gerenciaIndicator.id);
+                        if (targetIndicator) {
+                            Object.assign(targetIndicator, { ...sourceIndicator, peso: targetIndicator.peso, icon: targetIndicator.icon, isEditable: targetIndicator.isEditable, prefillFrom: targetIndicator.prefillFrom });
+                            
+                            let sourceIndex = manutRDData.indicators.indexOf(sourceIndicator);
+                            let targetIndex = gerenciaIndicators.indexOf(targetIndicator);
+                            let childIndex = 1;
+                            let j = sourceIndex + 1;
+                            while(j < manutRDData.indicators.length && manutRDData.indicators[j].tipo === 'A') {
+                                const sourceChild = manutRDData.indicators[j];
+                                const targetChild = gerenciaIndicators[targetIndex + childIndex];
+                                if (targetChild && targetChild.tipo === 'A' && !targetChild.isEditable) {
+                                    Object.assign(targetChild, sourceChild);
+                                }
+                                childIndex++;
+                                j++;
+                            }
+                        }
+                     }
+                }
+            });
+        }
+
 
         simulateBtn.addEventListener('click', () => {
             updateAndSave();
@@ -808,7 +993,7 @@
                 const row = [
                     d.nome, d.tipo, d.peso,
                     String(d.metaMes).replace('.',','), String(d.realMes).replace('.',','), String(d.notaMes).replace('.',','),
-                    String(d.metaAcumulado).replace('.',','), String(d.realAcumulado).replace('.',','), String(d.notaAcumulada).replace('.',',')
+                    String(d.metaAcumulado).replace('.',','), String(d.realAcumulado).replace('.',',')
                 ];
                 csvContent += row.join(";") + "\n";
             });
@@ -838,7 +1023,13 @@
                 formTitle.textContent = leadershipName;
                 resultsTitle.textContent = leadershipName;
                 
-                loadData();
+                const data = loadData(currentLeadershipId);
+                indicadores = data.indicators;
+                monthInput.value = data.month;
+
+                if (currentLeadershipId === 'gerencia_om_metro') {
+                    consolidateGerenciaData(indicadores);
+                }
                 indicadores = sortIndicators(indicadores);
                 renderForm();
                 
@@ -851,6 +1042,17 @@
             currentLeadershipId = null;
             formSection.classList.add('hidden');
             homeSection.classList.remove('hidden');
+        });
+        
+        goToPresentationBtn.addEventListener('click', () => {
+            renderPresentationView();
+            resultsSectionWrapper.classList.add('hidden');
+            presentationSectionWrapper.classList.remove('hidden');
+        });
+
+        backToResultsBtn.addEventListener('click', () => {
+            presentationSectionWrapper.classList.add('hidden');
+            resultsSectionWrapper.classList.remove('hidden');
         });
 
         // --- INICIALIZAÇÃO ---
